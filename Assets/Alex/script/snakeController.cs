@@ -39,7 +39,6 @@ public class snakeController : MonoBehaviour
             body.transform.LookAt(point);
             
             if (index > 1) {
-                Debug.Log("addTag");
                 body.tag = "killSnake";
             }
             index++;
@@ -50,11 +49,11 @@ public class snakeController : MonoBehaviour
         if (BodyParts.Count >= 1) {
             GameObject.Destroy(BodyParts[BodyParts.Count - 1]);
             BodyParts.RemoveAt(BodyParts.Count - 1);
-            GameObject body = Instantiate(BodyPrefab);
+            GameObject body = Instantiate(BodyPrefab, new Vector3(0f, 7f, 0f), Quaternion.identity);
             BodyParts.Add(body);
         }
 
-        GameObject tail = Instantiate(TailPrefab);
+        GameObject tail = Instantiate(TailPrefab, new Vector3(0f, 7f, 0f), Quaternion.identity);
         BodyParts.Add(tail);
     }
 
