@@ -6,7 +6,7 @@ public class snakeController : MonoBehaviour
 {
     public float moveSpeed = 5;
     public float SteerSpeed = 180;
-    public int Gap = 8;
+    public int Gap = 80;
 
     public GameObject BodyPrefab;
     public GameObject TailPrefab;
@@ -38,24 +38,24 @@ public class snakeController : MonoBehaviour
             body.transform.position += moveDirection * moveSpeed * Time.deltaTime;
             body.transform.LookAt(point);
             
-            // if (index == 1) {
-            //     Debug.Log("addTag");
-            //     body.tag = "killSnake";
-            // }
+            if (index > 1) {
+                Debug.Log("addTag");
+                body.tag = "killSnake";
+            }
             index++;
         }
     }
 
     private void GrowSnake() {
-        // if (BodyParts.Count >= 1) {
-        //     GameObject.Destroy(BodyParts[BodyParts.Count - 1]);
-        //     BodyParts.RemoveAt(BodyParts.Count - 1);
+        if (BodyParts.Count >= 1) {
+            GameObject.Destroy(BodyParts[BodyParts.Count - 1]);
+            BodyParts.RemoveAt(BodyParts.Count - 1);
             GameObject body = Instantiate(BodyPrefab);
             BodyParts.Add(body);
-        // }
+        }
 
-        // GameObject tail = Instantiate(TailPrefab);
-        // BodyParts.Add(tail);
+        GameObject tail = Instantiate(TailPrefab);
+        BodyParts.Add(tail);
     }
 
     public void OnTriggerEnter(Collider other)
