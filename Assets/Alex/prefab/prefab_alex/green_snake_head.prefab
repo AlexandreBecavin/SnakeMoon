@@ -50,10 +50,12 @@ MonoBehaviour:
   moveSpeed: 5
   SteerSpeed: 180
   Gap: 50
-  score: 0
-  scoreText: {fileID: 0}
   BodyPrefab: {fileID: 9099957926589513849, guid: bd0942933ae0ed14b97f5267465991b1, type: 3}
   TailPrefab: {fileID: 4855043306623990038, guid: 47d069fe30bd0fc41b71dcfa8bfb07ec, type: 3}
+  FruitsPrefab: {fileID: 0}
+  score: {fileID: 0}
+  minPosition: {x: -9.5, y: 0.5, z: -9.5}
+  maxPosition: {x: 9.5, y: 0.5, z: 9.5}
 --- !u!65 &1726784796247491096
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -73,8 +75,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.8, y: 0.6, z: 1}
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!54 &-5061095454127835680
 Rigidbody:
   m_ObjectHideFlags: 0

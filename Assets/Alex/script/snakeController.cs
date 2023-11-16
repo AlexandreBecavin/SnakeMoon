@@ -1,19 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class SnakeController : MonoBehaviour
 {
     public float moveSpeed = 5;
     public float SteerSpeed = 180;
     public int Gap = 8;
-    public int score = 0;
-    public Text scoreText;
     public GameObject BodyPrefab;
     public GameObject TailPrefab;
     public GameObject FruitsPrefab;
 
+    public Score score;
     public Vector3 minPosition = new Vector3(-9.5F, 0.5F, -9.5F);
     public Vector3 maxPosition = new Vector3(9.5F, 0.5F, 9.5F);
 
@@ -25,7 +23,6 @@ public class SnakeController : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
-        scoreText.text = "Score: 0";
         GrowSnake();
     }
 
@@ -84,8 +81,7 @@ public class SnakeController : MonoBehaviour
 
         if (other.CompareTag("eatSnake"))
         {
-            score++;
-            scoreText.text = "Score: " + score;
+            score.increaseScore();
             Destroy(other.gameObject);
             GrowSnake();
             addFruits();
