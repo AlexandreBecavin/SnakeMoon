@@ -49,7 +49,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   SteerSpeed: 180
-  Gap: 100
+  Gap: 50
+  score: 0
+  scoreText: {fileID: 0}
   BodyPrefab: {fileID: 9099957926589513849, guid: bd0942933ae0ed14b97f5267465991b1, type: 3}
   TailPrefab: {fileID: 4855043306623990038, guid: 47d069fe30bd0fc41b71dcfa8bfb07ec, type: 3}
 --- !u!65 &1726784796247491096

@@ -7,11 +7,15 @@ public class snakeController : MonoBehaviour
 {
     public float moveSpeed = 5;
     public float SteerSpeed = 180;
-    public int Gap = 80;
+    public int Gap = 8;
     public int score = 0;
     public Text scoreText;
     public GameObject BodyPrefab;
     public GameObject TailPrefab;
+    public GameObject FruitsPrefab;
+
+    public Vector3 minPosition = new Vector3(-9.5F, 0.5F, -9.5F);
+    public Vector3 maxPosition = new Vector3(9.5F, 0.5F, 9.5F);
 
 
     private List<GameObject> BodyParts = new List<GameObject>();
@@ -20,6 +24,7 @@ public class snakeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
         scoreText.text = "Score: 0";
         GrowSnake();
     }
@@ -36,7 +41,7 @@ public class snakeController : MonoBehaviour
 
         int index = 0;
         foreach (var body in BodyParts) {
-            Vector3 point = PositionsHistory[Mathf.Min(index * Gap, PositionsHistory.Count - 1)];
+            Vector3 point = PositionsHistory[index * Gap];
             Vector3 moveDirection = point - body.transform.position;
             body.transform.position += moveDirection * moveSpeed * Time.deltaTime;
             body.transform.LookAt(point);
@@ -45,6 +50,10 @@ public class snakeController : MonoBehaviour
                 body.tag = "killSnake";
             }
             index++;
+        }
+
+        if (PositionsHistory.Count > index * Gap + Gap + 1) {
+            PositionsHistory.RemoveRange(index * Gap + Gap + 1, PositionsHistory.Count - (index * Gap + Gap + 1));
         }
     }
 
@@ -74,6 +83,31 @@ public class snakeController : MonoBehaviour
             scoreText.text = "Score: " + score;
             Destroy(other.gameObject);
             GrowSnake();
+            addFruits();
         }
+    }
+
+    private void addFruits() 
+    {   
+        Vector3 coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z)); 
+        while (!IsVectorFarEnough(coords, 2F, BodyParts, PositionsHistory))
+        {
+            coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z)); 
+        }
+        Instantiate(FruitsPrefab, coords, Quaternion.identity);
+    } 
+
+
+    private bool IsVectorFarEnough(Vector3 newVector, float minDistance, List<GameObject> BodyParts, List<Vector3> PositionsHistory)
+    {
+        for (int i = 0; i < BodyParts.Count; i++)
+        {
+            if (Vector3.Distance(newVector, PositionsHistory[i * Gap]) < minDistance)
+            {
+                Debug.Log("Distance not good");
+                return false;
+            }
+        }
+        return true;
     }
 }
