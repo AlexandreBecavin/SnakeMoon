@@ -82,17 +82,15 @@ public class SnakeController : MonoBehaviour
 
         if (other.CompareTag("eatSnake"))
         {
-            Debug.Log("eat");
             Destroy(other.gameObject);
+            score.increaseScore();
             GrowSnake();
             addFruits();
-            score.increaseScore();
         }
     }
 
     private void addFruits()
     {
-        Debug.Log("test");
         Vector3 coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z));
         while (!IsVectorFarEnough(coords, 2F))
         {

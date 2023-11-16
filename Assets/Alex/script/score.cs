@@ -17,9 +17,4 @@ public class Score : MonoBehaviour
         score++;
         scoreText.text = "Score: " + score;
     }
-
-    public void resetScore() {
-        score = 0;
-        scoreText.text = "Score: " + score;
-    }
 }
