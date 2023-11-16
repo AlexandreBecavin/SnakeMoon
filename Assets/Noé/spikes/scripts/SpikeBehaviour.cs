@@ -19,8 +19,6 @@ public class SpikeController : MonoBehaviour
 
     public float warningSurfaceDuration = 1.5f; // Durée d'affichage de la surface d'avertissement
 
-
-    public float spikeNumber = 1f; // Niveau du sol
     public float groundLevel = 1f; // Niveau du sol
 
     public float warningTime = 3f; // Temps de préavis avant que le pic ne sorte
@@ -39,7 +37,7 @@ public class SpikeController : MonoBehaviour
         clear();
 
 
-        for (int i = 0; i < spikeNumber; i++)
+        for (int i = 0; i < Random.Range(1, 15); i++)
         {
             Vector3 coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), -1f, Random.Range(minPosition.z, maxPosition.z));
             while (!snakeController.IsVectorFarEnough(coords, 2F))
