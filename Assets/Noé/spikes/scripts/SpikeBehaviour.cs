@@ -67,9 +67,6 @@ public class SpikeController : MonoBehaviour
         }
         else
         {
-
-
-
             // Définit les positions cibles au niveau du sol pour les pics sélectionnés
             foreach (int index in selectedIndices)
             {
