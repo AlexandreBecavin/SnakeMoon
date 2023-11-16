@@ -6,7 +6,7 @@ public class SnakeController : MonoBehaviour
 {
     public float moveSpeed = 5;
     public float SteerSpeed = 180;
-    public int Gap = 8;
+    public int Gap = 12;
     public GameObject BodyPrefab;
     public GameObject TailPrefab;
     public GameObject FruitsPrefab;
@@ -23,6 +23,7 @@ public class SnakeController : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
+        addFruits();
         GrowSnake();
     }
 
@@ -81,15 +82,17 @@ public class SnakeController : MonoBehaviour
 
         if (other.CompareTag("eatSnake"))
         {
-            score.increaseScore();
+            Debug.Log("eat");
             Destroy(other.gameObject);
             GrowSnake();
             addFruits();
+            score.increaseScore();
         }
     }
 
     private void addFruits()
     {
+        Debug.Log("test");
         Vector3 coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z));
         while (!IsVectorFarEnough(coords, 2F))
         {
