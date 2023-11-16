@@ -70,7 +70,6 @@ public class SpikeController : MonoBehaviour
         {
             Destroy(warningSurface);
         }
-        // warningSurfaces.Clear();
 
         foreach (var spike in spikes)
         {
@@ -108,7 +107,6 @@ public class SpikeController : MonoBehaviour
 
     void clear()
     {
-        Debug.Log("here");
         if (spikes.Count > 0)
         {
             foreach (var spike in spikes)
