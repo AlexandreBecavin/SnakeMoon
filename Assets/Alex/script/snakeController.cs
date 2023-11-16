@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class snakeController : MonoBehaviour
+public class SnakeController : MonoBehaviour
 {
     public float moveSpeed = 5;
     public float SteerSpeed = 180;
@@ -19,7 +19,7 @@ public class snakeController : MonoBehaviour
 
 
     private List<GameObject> BodyParts = new List<GameObject>();
-    private List<Vector3> PositionsHistory = new List<Vector3>();  
+    public List<Vector3> PositionsHistory = new List<Vector3>();
 
     // Start is called before the first frame update
     void Start()
@@ -40,25 +40,30 @@ public class snakeController : MonoBehaviour
         PositionsHistory.Insert(0, transform.position);
 
         int index = 0;
-        foreach (var body in BodyParts) {
+        foreach (var body in BodyParts)
+        {
             Vector3 point = PositionsHistory[index * Gap];
             Vector3 moveDirection = point - body.transform.position;
             body.transform.position += moveDirection * moveSpeed * Time.deltaTime;
             body.transform.LookAt(point);
 
-            if (index > 1) {
+            if (index > 1)
+            {
                 body.tag = "killSnake";
             }
             index++;
         }
 
-        if (PositionsHistory.Count > index * Gap + Gap + 1) {
+        if (PositionsHistory.Count > index * Gap + Gap + 1)
+        {
             PositionsHistory.RemoveRange(index * Gap + Gap + 1, PositionsHistory.Count - (index * Gap + Gap + 1));
         }
     }
 
-    private void GrowSnake() {
-        if (BodyParts.Count >= 1) {
+    private void GrowSnake()
+    {
+        if (BodyParts.Count >= 1)
+        {
             GameObject.Destroy(BodyParts[BodyParts.Count - 1]);
             BodyParts.RemoveAt(BodyParts.Count - 1);
             GameObject body = Instantiate(BodyPrefab, new Vector3(0f, 7f, 0f), Quaternion.identity);
@@ -87,15 +92,15 @@ public class snakeController : MonoBehaviour
         }
     }
 
-    private void addFruits() 
-    {   
-        Vector3 coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z)); 
+    private void addFruits()
+    {
+        Vector3 coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z));
         while (!IsVectorFarEnough(coords, 2F, BodyParts, PositionsHistory))
         {
-            coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z)); 
+            coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z));
         }
         Instantiate(FruitsPrefab, coords, Quaternion.identity);
-    } 
+    }
 
 
     private bool IsVectorFarEnough(Vector3 newVector, float minDistance, List<GameObject> BodyParts, List<Vector3> PositionsHistory)
