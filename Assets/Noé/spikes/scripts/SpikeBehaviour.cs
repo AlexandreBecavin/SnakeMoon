@@ -51,7 +51,7 @@ public class SpikeController : MonoBehaviour
 
             GameObject warning = Instantiate(WarningPrefab, coords, Quaternion.identity);
             Vector3 warningPosition = warning.transform.position;
-            warningPosition.y = 1f;
+            warningPosition.y = 0.5f;
             warning.transform.position = warningPosition;
             warningSurfaces.Insert(0, warning);
         }
