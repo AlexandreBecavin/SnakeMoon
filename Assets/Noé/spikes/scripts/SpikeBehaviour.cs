@@ -1,118 +1,128 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SpikeController : MonoBehaviour
 {
-    public GameObject[] spikeModels; // Tableau de modèles de pic
-    public float intervalBetweenSpikes = 5f; // Intervalle entre les pics
-    public float warningTime = 3f; // Temps de préavis avant que le pic ne sorte
-    public float spikeHeight = 50f; // Hauteur du pic lorsqu'il est sorti
-    public float groundLevel = 0f; // Niveau du sol
-    public float transitionDuration = 1f; // Durée de la transition
-    private List<int> selectedIndices = new List<int>(); // Liste des indices des pics à modifier
+    public GameObject SpikePrefab;
 
+    public GameObject WarningPrefab;
 
-    public GameObject warningSurfacePrefab; // Préfabriqué de la surface d'avertissement
+    public SnakeController snakeController;
+
+    public Vector3 minPosition = new Vector3(-9.5F, -3F, -9.5F);
+    public Vector3 maxPosition = new Vector3(9.5F, -3F, 9.5F);
+
+    private List<GameObject> spikes = new List<GameObject>();
+    private List<GameObject> warningSurfaces = new List<GameObject>();
+
     public float warningSurfaceDuration = 1.5f; // Durée d'affichage de la surface d'avertissement
 
-    private bool spikeActive = false;
-    private Vector3[] initialPositions;
-    private Vector3[] targetPositions;
-    private GameObject warningPlane; // Référence à la surface d'avertissement
+
+    public float spikeNumber = 1f; // Niveau du sol
+    public float groundLevel = 1f; // Niveau du sol
+
+    public float warningTime = 3f; // Temps de préavis avant que le pic ne sorte
+
+    public float intervalBetweenSpikes = 5f; // Intervalle entre les pics
+    public float transitionDuration = 1f; // Durée de la transition
 
     void Start()
     {
-        initialPositions = new Vector3[spikeModels.Length];
-        targetPositions = new Vector3[spikeModels.Length];
-
-        // Stocke les positions initiales de chaque pic
-        for (int i = 0; i < spikeModels.Length; i++)
-        {
-            initialPositions[i] = spikeModels[i].transform.position;
-            targetPositions[i] = initialPositions[i]; // Initialise les positions cibles à celles initiales
-        }
-
         InvokeRepeating("ToggleSpike", intervalBetweenSpikes, intervalBetweenSpikes);
     }
 
     void ToggleSpike()
     {
-        spikeActive = !spikeActive;
+
+        clear();
 
 
-        if (spikeActive)
+        for (int i = 0; i < spikeNumber; i++)
         {
-
-            // CreateWarningSurface();
-            // ShowWarning();
-            // Invoke("HideWarning", warningTime);
-
-            selectedIndices.Clear(); // Efface les indices sélectionnés
-            // Choisis aléatoirement les indices des pics à modifier
-            for (int i = 0; i < spikeModels.Length; i++)
+            Vector3 coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), -1f, Random.Range(minPosition.z, maxPosition.z));
+            while (!snakeController.IsVectorFarEnough(coords, 2F))
             {
-                if (Random.value > 0.5f) // Ajustez la probabilité selon vos besoins
-                {
-                    selectedIndices.Add(i); // Ajoute l'indice à la liste des indices sélectionnés
-                }
+                coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), -1f, Random.Range(minPosition.z, maxPosition.z));
             }
+            GameObject spike = Instantiate(SpikePrefab, coords, Quaternion.Euler(-90f, 0f, 0f));
+            spikes.Insert(0, spike);
 
-
-
-            foreach (int index in selectedIndices)
-            {
-                targetPositions[index] = new Vector3(initialPositions[index].x, initialPositions[index].y + spikeHeight, initialPositions[index].z);
-            }
+            GameObject warning = Instantiate(WarningPrefab, coords, Quaternion.identity);
+            Vector3 warningPosition = warning.transform.position;
+            warningPosition.y = 1f;
+            warning.transform.position = warningPosition;
+            warningSurfaces.Insert(0, warning);
         }
-        else
+
+
+        StartCoroutine(RaiseSpikes());
+    }
+
+
+
+    IEnumerator RaiseSpikes()
+    {
+        yield return new WaitForSeconds(2f);
+
+        foreach (var warningSurface in warningSurfaces)
         {
+            Destroy(warningSurface);
+        }
+        // warningSurfaces.Clear();
+
+        foreach (var spike in spikes)
+        {
+            Vector3 spikePosition = spike.transform.position;
+            spikePosition.y = 1f;
+            StartCoroutine(MoveSpike(spike, spikePosition));
+        }
+
+        yield return new WaitForSeconds(2f);
+        foreach (var spike in spikes)
+        {
+            Vector3 spikePosition = spike.transform.position;
+            spikePosition.y = -3f;
+            StartCoroutine(MoveSpike(spike, spikePosition));
+        }
+
+    }
+
+    IEnumerator MoveSpike(GameObject spike, Vector3 targetPosition)
+    {
+        float elapsedTime = 0f;
+        Vector3 initialPosition = spike.transform.position;
+
+        while (elapsedTime < transitionDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            spike.transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / transitionDuration);
+            yield return null;
+        }
+
+        spike.transform.position = targetPosition;
+    }
 
 
 
-            // Définit les positions cibles au niveau du sol pour les pics sélectionnés
-            foreach (int index in selectedIndices)
+    void clear()
+    {
+        Debug.Log("here");
+        if (spikes.Count > 0)
+        {
+            foreach (var spike in spikes)
             {
-                targetPositions[index] = new Vector3(initialPositions[index].x, initialPositions[index].y, initialPositions[index].z);
+                Destroy(spike);
             }
-
-            //DestroyWarningSurface();
+            spikes.Clear();
         }
     }
 
     void Update()
     {
-        // Effectue une transition douce vers les positions cibles
-        for (int i = 0; i < spikeModels.Length; i++)
-        {
-            spikeModels[i].transform.position = Vector3.Lerp(spikeModels[i].transform.position, targetPositions[i], Time.deltaTime / transitionDuration);
-        }
-    }
 
-    void CreateWarningSurface()
-    {
-        // Crée la surface d'avertissement au-dessus des pics
-        warningSurfacePrefab = Instantiate(warningSurfacePrefab, new Vector3(transform.position.x, transform.position.y + 10f, transform.position.z), Quaternion.identity);
-        Destroy(warningSurfacePrefab, warningSurfaceDuration); // Détruit la surface après la durée spécifiée
-    }
-
-    void DestroyWarningSurface()
-    {
-        // Détruit la surface d'avertissement si elle existe encore
-        if (warningSurfacePrefab != null)
-        {
-            Destroy(warningSurfacePrefab);
-        }
     }
 
 
-    void ShowWarning()
-    {
-        // Effectuez ici l'avertissement visuel si nécessaire
-    }
-
-    void HideWarning()
-    {
-        // Arrêtez l'avertissement visuel ici si nécessaire
-    }
 }
