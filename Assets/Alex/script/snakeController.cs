@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class snakeController : MonoBehaviour
 {
     public float moveSpeed = 5;
     public float SteerSpeed = 180;
     public int Gap = 80;
-
+    public int score = 0;
+    public Text scoreText;
     public GameObject BodyPrefab;
     public GameObject TailPrefab;
 
@@ -17,7 +19,8 @@ public class snakeController : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {    
+    {
+        scoreText.text = "Score: 0";
         GrowSnake();
     }
 
@@ -37,7 +40,7 @@ public class snakeController : MonoBehaviour
             Vector3 moveDirection = point - body.transform.position;
             body.transform.position += moveDirection * moveSpeed * Time.deltaTime;
             body.transform.LookAt(point);
-            
+
             if (index > 1) {
                 body.tag = "killSnake";
             }
@@ -67,6 +70,8 @@ public class snakeController : MonoBehaviour
 
         if (other.CompareTag("eatSnake"))
         {
+            score++;
+            scoreText.text = "Score: " + score;
             Destroy(other.gameObject);
             GrowSnake();
         }
