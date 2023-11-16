@@ -95,7 +95,7 @@ public class SnakeController : MonoBehaviour
     private void addFruits()
     {
         Vector3 coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z));
-        while (!IsVectorFarEnough(coords, 2F, BodyParts, PositionsHistory))
+        while (!IsVectorFarEnough(coords, 2F))
         {
             coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z));
         }
@@ -103,7 +103,7 @@ public class SnakeController : MonoBehaviour
     }
 
 
-    private bool IsVectorFarEnough(Vector3 newVector, float minDistance, List<GameObject> BodyParts, List<Vector3> PositionsHistory)
+    public bool IsVectorFarEnough(Vector3 newVector, float minDistance)
     {
         for (int i = 0; i < BodyParts.Count; i++)
         {
