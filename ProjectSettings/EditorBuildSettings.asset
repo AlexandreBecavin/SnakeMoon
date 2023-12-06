@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Quantum Tek/Simple Menu/Scenes/Simple Main Menu Demo.unity
+    guid: 0571b5ac2f85141729a62dcec949932e
+  - enabled: 1
+    path: Assets/Alex/Scenes/Base terrain.unity
+    guid: 26d9fc262faee7c419e5606c5ade9547
   m_configObjects: {}

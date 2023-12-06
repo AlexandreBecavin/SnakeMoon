@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SnakeController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class SnakeController : MonoBehaviour
     public GameObject GoldFruitsPrefab;
 
     public Score score;
+    public RestartButton RestartButton;
 
     public MenuMusicController menuMusicController;
     public Vector3 minPosition = new Vector3(-9.5F, 0.5F, -9.5F);
@@ -79,6 +81,7 @@ public class SnakeController : MonoBehaviour
     {
         if (other.CompareTag("killSnake"))
         {
+            SceneManager.LoadScene(0);
             Debug.Log("Snake à été tué!");
             moveSpeed = 0;
             menuMusicController.StartMusic("deathPlayer");
