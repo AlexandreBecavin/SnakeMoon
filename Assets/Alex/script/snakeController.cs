@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SnakeController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class SnakeController : MonoBehaviour
     public GameObject FruitsPrefab;
 
     public Score score;
+    public RestartButton RestartButton;
     public Vector3 minPosition = new Vector3(-9.5F, 0.5F, -9.5F);
     public Vector3 maxPosition = new Vector3(9.5F, 0.5F, 9.5F);
 
@@ -77,7 +79,9 @@ public class SnakeController : MonoBehaviour
         if (other.CompareTag("killSnake"))
         {
             moveSpeed = 0;
+            SceneManager.LoadScene(0);
             Debug.Log("Snake à été tué!");
+
         }
 
         if (other.CompareTag("eatSnake"))
