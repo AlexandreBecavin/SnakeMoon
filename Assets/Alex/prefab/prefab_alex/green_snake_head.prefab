@@ -53,6 +53,7 @@ MonoBehaviour:
   BodyPrefab: {fileID: 9099957926589513849, guid: bd0942933ae0ed14b97f5267465991b1, type: 3}
   TailPrefab: {fileID: 4855043306623990038, guid: 47d069fe30bd0fc41b71dcfa8bfb07ec, type: 3}
   FruitsPrefab: {fileID: 5920221210242280362, guid: e8cfcc853f0b7894098dfe3afd512426, type: 3}
+  GoldFruitsPrefab: {fileID: 7988714641115755007, guid: 0eb784517cd3db9498d2569210eeb5f4, type: 3}
   score: {fileID: 5007763436843340537, guid: 47d995f9d8204384abe49d0e88f2ac20, type: 3}
   minPosition: {x: -9.5, y: 0.5, z: -9.5}
   maxPosition: {x: 9.5, y: 0.5, z: 9.5}
