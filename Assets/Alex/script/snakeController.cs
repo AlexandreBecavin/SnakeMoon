@@ -13,6 +13,8 @@ public class SnakeController : MonoBehaviour
     public GameObject GoldFruitsPrefab;
 
     public Score score;
+
+    public MenuMusicController menuMusicController;
     public Vector3 minPosition = new Vector3(-9.5F, 0.5F, -9.5F);
     public Vector3 maxPosition = new Vector3(9.5F, 0.5F, 9.5F);
 
@@ -77,19 +79,23 @@ public class SnakeController : MonoBehaviour
     {
         if (other.CompareTag("killSnake"))
         {
-            moveSpeed = 0;
             Debug.Log("Snake à été tué!");
+            moveSpeed = 0;
+            menuMusicController.StartMusic("deathPlayer");
+            menuMusicController.StartMusic("gameOver");
         }
 
         if (other.CompareTag("eatSnake"))
         {
             GrowSnake();
+            menuMusicController.StartMusic("eat");
             if (other.name.Equals("Watermelon_512(Clone)")) {
                 score.increaseScore(1);
                 addFruits(FruitsPrefab);
                 goldFruits();
             } else {
                 score.increaseScore(5);
+                menuMusicController.StartMusic("goldenMelon");
             }
             Destroy(other.gameObject);
         }

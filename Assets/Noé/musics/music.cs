@@ -4,65 +4,58 @@ using UnityEngine;
 
 public class MenuMusicController : MonoBehaviour
 {
-    public AudioSource menuMusic; // Référence à l'Audio Source de la musique du menu
-    public AudioSource mainMusic;
-    public AudioSource discoMusic;
+    public AudioSource goldenMelon;
     public AudioSource gameOverMusic;
     public AudioSource munch;
+    public AudioSource deathPlayer;
+
 
     void Start()
     {
-        menuMusic.Play(); // Démarre la lecture de la musique du menu au démarrage du script
+        if (goldenMelon == null || gameOverMusic == null || munch == null)
+        {
+            Debug.LogError("Assurez-vous que toutes les références AudioSource sont définies.");
+            return;
+        }
     }
 
-    // Vous pouvez appeler cette fonction lorsque le menu principal est affiché
-    public void StartMenuMusic()
+    public void StartMusic(string musique)
     {
-        menuMusic.Play(); // Commence à jouer la musique du menu
+        if (musique == "eat")
+        {
+            munch.Play();
+        }
+        else if (musique == "gameOver")
+        {
+            gameOverMusic.Play();
+        }
+        else if (musique == "goldenMelon")
+        {
+            goldenMelon.Play();
+        }
+        else if (musique == "deathPlayer")
+        {
+            deathPlayer.Play();
+        }
     }
 
-    // Vous pouvez appeler cette fonction lorsque vous quittez le menu
-    public void StopMenuMusic()
+    public void StopMusic(string musique)
     {
-        menuMusic.Stop(); // Arrête la musique du menu
+        if (musique == "eat")
+        {
+            munch.Stop();
+        }
+        else if (musique == "gameOver")
+        {
+            gameOverMusic.Stop();
+        }
+        else if (musique == "goldenMelon")
+        {
+            goldenMelon.Stop();
+        }
+        else if (musique == "deathPlayer")
+        {
+            deathPlayer.Stop();
+        }
     }
-
-
-    public void StartMainMusic()
-    {
-        mainMusic.Play(); // Commence à jouer la musique du menu
-    }
-
-    // Vous pouvez appeler cette fonction lorsque vous quittez le menu
-    public void StopMainMusic()
-    {
-        mainMusic.Stop(); // Arrête la musique du menu
-    }
-
-    public void StartDiscoMusic()
-    {
-        discoMusic.Play(); // Commence à jouer la musique du menu
-    }
-
-    // Vous pouvez appeler cette fonction lorsque vous quittez le menu
-    public void StopDiscoMusic()
-    {
-        discoMusic.Stop(); // Arrête la musique du menu
-    }
-    public void StartGameOverMusic()
-    {
-        gameOverMusic.Play(); // Commence à jouer la musique du menu
-    }
-
-    // Vous pouvez appeler cette fonction lorsque vous quittez le menu
-    public void StopGameOverMusic()
-    {
-        gameOverMusic.Stop(); // Arrête la musique du menu
-    }
-
-    public void PlayMunch()
-    {
-        munch.Play(); // Commence à jouer la musique du menu
-    }
-
 }
