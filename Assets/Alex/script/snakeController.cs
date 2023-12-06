@@ -11,9 +11,12 @@ public class SnakeController : MonoBehaviour
     public GameObject BodyPrefab;
     public GameObject TailPrefab;
     public GameObject FruitsPrefab;
+    public GameObject GoldFruitsPrefab;
 
     public Score score;
     public RestartButton RestartButton;
+
+    public MenuMusicController menuMusicController;
     public Vector3 minPosition = new Vector3(-9.5F, 0.5F, -9.5F);
     public Vector3 maxPosition = new Vector3(9.5F, 0.5F, 9.5F);
 
@@ -25,7 +28,7 @@ public class SnakeController : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
-        addFruits();
+        addFruits(FruitsPrefab);
         GrowSnake();
     }
 
@@ -78,29 +81,44 @@ public class SnakeController : MonoBehaviour
     {
         if (other.CompareTag("killSnake"))
         {
-            moveSpeed = 0;
             SceneManager.LoadScene(0);
             Debug.Log("Snake à été tué!");
-
+            moveSpeed = 0;
+            menuMusicController.StartMusic("deathPlayer");
+            menuMusicController.StartMusic("gameOver");
         }
 
         if (other.CompareTag("eatSnake"))
         {
-            Destroy(other.gameObject);
-            score.increaseScore();
             GrowSnake();
-            addFruits();
+            menuMusicController.StartMusic("eat");
+            if (other.name.Equals("Watermelon_512(Clone)")) {
+                score.increaseScore(1);
+                addFruits(FruitsPrefab);
+                goldFruits();
+            } else {
+                score.increaseScore(5);
+                menuMusicController.StartMusic("goldenMelon");
+            }
+            Destroy(other.gameObject);
         }
     }
 
-    private void addFruits()
+    private void addFruits(GameObject prefab)
     {
         Vector3 coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z));
         while (!IsVectorFarEnough(coords, 2F))
         {
             coords = new Vector3(Random.Range(minPosition.x, maxPosition.x), minPosition.y, Random.Range(minPosition.z, maxPosition.z));
         }
-        Instantiate(FruitsPrefab, coords, Quaternion.identity);
+        Instantiate(prefab, coords, Quaternion.identity);
+    }
+
+    private void goldFruits()
+    {
+        if (Random.Range(1, 20) == 1) {
+            addFruits(GoldFruitsPrefab);
+        }
     }
 
 

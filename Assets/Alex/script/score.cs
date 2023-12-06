@@ -13,8 +13,8 @@ public class Score : MonoBehaviour
         scoreText.text = "Score: 0";
     }
     // Start is called before the first frame update
-    public void increaseScore() {
-        score++;
+    public void increaseScore(int increase) {
+        score = score + increase;
         scoreText.text = "Score: " + score;
     }
 }
