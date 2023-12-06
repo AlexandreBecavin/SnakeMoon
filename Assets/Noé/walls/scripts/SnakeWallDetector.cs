@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SnakeWallDetector : MonoBehaviour
 {
-    public float wallActivationDistance = 2f; // Distance à partir de laquelle les murs seront activés
+    public float wallActivationDistance = 3f; // Distance à partir de laquelle les murs seront activés
 
     public GameObject[] walls; // Tableau contenant tous les murs
 
